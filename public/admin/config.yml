@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: viniciusith/katiadv
+  branch: main
+
+media_folder: "/public/media"
+public_folder: "/media"
+
+collections:
+  - name: "authors"
+    label: "Autores"
+    folder: "src/content/authors"
+    media_folder: "/public/media/authors"
+    public_folder: "/media/authors"
+    create: true
+    slug: "{{name}}"
+    format: "json"
+    fields:
+      - { label: "Nome", name: "name", widget: "string" }
+      - { label: "Imagem", name: "image", widget: "image" }
+      - { label: "Biografia", name: "bio", widget: "text", required: false }
+      - {
+          label: "Rede Social",
+          name: "social",
+          widget: "string",
+          required: false,
+          hint: "URL completa (ex: https://linkedin.com/in/usuario)",
+        }
+
+  - name: "posts"
+    label: "Posts"
+    folder: "src/content/posts"
+    media_folder: "/public/media/posts"
+    public_folder: "/media/posts"
+    create: true
+    slug: "{{slug}}"
+    format: "frontmatter"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Conteúdo", name: "body", widget: "richtext" }
+      - {
+          label: "Autores",
+          name: "author",
+          widget: "relation",
+          multiple: true,
+          collection: "authors",
+          search_fields: ["name"],
+          value_field: "{{slug}}",
+          display_fields: ["name"],
+        }
+      - { label: "Imagem Destaque", name: "featured_image", widget: "image" }
+      - { label: "Resumo", name: "summary", widget: "text" }
+
+  - name: "offices"
+    label: "Escritórios"
+    folder: "src/content/offices"
+    media_folder: "/public/media/offices"
+    public_folder: "/media/offices"
+    create: true
+    slug: "{{city}}"
+    format: "json"
+    fields:
+      - { label: "Cidade", name: "city", widget: "string" }
+      - { label: "Endereço", name: "address", widget: "string" }
+      - { label: "Coordenada", name: "location", widget: "map" }
+      - { label: "Imagem", name: "image", widget: "image" }
+      - {
+          label: "Link",
+          name: "link",
+          widget: "string",
+          hint: "URL completa (ex: https://instagram.com/usuario)",
+        }
+      - {
+          label: "Ordem de Exibição",
+          name: "index",
+          widget: "number",
+          value_type: "int",
+          hint: "Número para ordenar a exibição (1-99 normal, 100+ especial)",
+        }
+      - {
+          label: "Horário de Funcionamento",
+          name: "businessHours",
+          widget: "string",
+          hint: "Ex: Segunda a Sexta, 09h às 18h",
+        }
